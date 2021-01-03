@@ -11,7 +11,7 @@ html {
 
 body {
   /* Padding bottom by footer height */
-  padding-bottom: 80px;
+  padding-bottom: 85px;
 }
 
 #footer {
@@ -22,10 +22,11 @@ body {
   padding-top: 20px;
   padding-bottom: 40px;
   text-align: center;
-  background-color: #eef074;
+  background-color: #f0ba74;
 }
 
 #footer p {
   margin: 0;
-  font-size: 16px;
+  font-size: 12px;
+  font-weight: bold;
 }

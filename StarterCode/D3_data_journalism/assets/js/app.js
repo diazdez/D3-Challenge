@@ -1,12 +1,20 @@
 // You need to create a scatter plot between two of the data variables 
-// such as Healthcare vs. Poverty OR Smokers vs. Age.
+// such as Healthcare vs. Poverty (OR Smokers vs. Age).
 // Using the D3 techniques, create a scatter plot that represents each state with circle elements. 
 // =================================
+// NOTES: 
+// - selected to work on scatter plot for: Healthcare vs. Poverty
+// - using "Live Server" to open html (instead of using Terminal). 
+// - i referenced D3:3-05 class activity to make chart responsive (responsive code)
+// that allows the website to be resized when browser window is adjusted...
+// - i referenced D3:3-09 class activity for this hw assignment
+
+//****************************************************************************************************** */
 // @TODO: YOUR CODE HERE!
 
 // svg container
-var svgWidth = 900;
-var svgHeight = 600;
+var svgWidth = 800;
+var svgHeight = 800;
 
 // create a margin variable
 var margin = {
@@ -34,61 +42,83 @@ var chartGroup = svg.append("g")
 d3.csv("assets/data/data.csv").then(function(healthData){
     console.log(healthData);
 
-    // Step 1: Parse Data/Cast as numbers using unitary operator
+    // Parse Data/Cast as numbers using unitary operator
     // ==============================
     healthData.forEach(function(data){
         data.poverty = +data.poverty;
         data.healthcare = +data.healthcare;
       });
       
-    // Step 2: Create scale functions
+    // Create scale functions
     // ==============================
     var xLinearScale = d3.scaleLinear()
-    .domain([8, d3.max(healthData, (function(d){
+    // .domain([8, d3.max(healthData, d => d.poverty)])
+    .domain([8, d3.max(healthData.map(function(d){
       return d.poverty
     }))])
     .range([0, width]);
 
     var yLinearScale = d3.scaleLinear()
-    .domain([0, d3.max(healthData, d => d.healthcare)])
+    // .domain([0, d3.max(healthData, d => d.healthcare)])
+    .domain([0, d3.max(healthData.map(function(d){
+      return d.healthcare
+    }))])
+    // Y-scale is flipped so that we can have 0 at the bottom of our axis
     .range([height, 0]);
 
 
-    // Step 3: Create axis functions
+    // Create axis functions:  x (bottomAxis) & y (leftAxis)
     // ==============================
     var bottomAxis = d3.axisBottom(xLinearScale);
     var leftAxis = d3.axisLeft(yLinearScale);
 
 
-    // Step 4: Append Axes to the chart
+    // Append Axes to the chart
     // ==============================
+    // x-axis [aka bottomAxis] (translate allows the axes to be placed properly): 
     chartGroup.append("g")
     .attr("transform", `translate(0, ${height})`)
     .call(bottomAxis);
-
+    // y-axis (no TRANSLATE bc by default everything will be placed at 0,0) ... 
     chartGroup.append("g")
     .call(leftAxis);
 
 
-    // Step 5: Create Circles
+    // Create Circles
+    // "enter" function allows for circles to be added
     // ==============================
-    var circlesGroup = chartGroup.selectAll("circle")
+    var circlesGroup = chartGroup.selectAll(".stateCircle")
     .data(healthData)
     .enter()
     .append("circle")
     .attr("cx", d => xLinearScale(d.poverty))
     .attr("cy", d => yLinearScale(d.healthcare))
-    .attr("r", "12")
-    .attr("fill", "#2a0491")
-    .attr("opacity", ".5");
+    .attr("r", "16")
+    .attr("class", "stateCircle")
+    .attr("opacity", ".4");
 
-    // Step 6: Initialize tool tip
+    // append text to the circles
+    var textGroup = chartGroup.selectAll(".stateText")
+    // textGroup.data(healthData)
+    .data(healthData)
+    .enter()
+    .append("text")
+    .attr("x", d => xLinearScale(d.poverty))
+    .attr("y", d => yLinearScale(d.healthcare))
+    .attr("class", "stateText")
+    .text(d => (d.abbr))
+    .attr("font-size", "14px")
+    .attr("font-weight", "bold")
+
+
+    // Initialize tool tip (pop-up disclosing data details)
+    // tooltip has a library, so .tooltip added to d3Style.css
     // ==============================
     var toolTip = d3.tip()
     .attr("class", "tooltip")
     .offset([100, -60])
     .html(function(d) {
-        return (`${d.state}<br>Lacks Healthcare: ${d.healthcare}<br>Poverty: ${d.poverty}`);
+        return (`${d.abbr}<br>Lacks Healthcare: ${d.healthcare}<br>Poverty: ${d.poverty}`);
     });
 
     // Step 7: Create tooltip in the chart
@@ -97,6 +127,7 @@ d3.csv("assets/data/data.csv").then(function(healthData){
 
 
     // Step 8: Create event listeners to display and hide the tooltip
+    // listener will require user to click the circle in order to view data-details retunred from "toolTip" 
     // ==============================
     circlesGroup.on("click", function(data) {
         toolTip.show(data, this);
@@ -120,8 +151,10 @@ d3.csv("assets/data/data.csv").then(function(healthData){
         .attr("class", "axisText")
         .text("In Poverty (%)");
   
-    });
+    })
     
-// .catch(function(error) {
-//     console.log(error);
-//   });
+.catch(function(error) {
+    console.log(error);
+});
+
+

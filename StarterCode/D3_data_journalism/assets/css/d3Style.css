@@ -14,6 +14,7 @@
   padding: 2px;
   padding-top: 8px;
   font: 12px sans-serif;
+  font-weight:bold;
   color: white;
   text-align: center;
   background: #d30263;
@@ -52,12 +53,12 @@
 /* font size dependent on radius, see app.js */
 .stateText {
   font-family: sans-serif;
-  fill: #fff;
+  fill:black;
   text-anchor: middle;
 }
 
 .stateCircle {
-  fill: #1393ca;
+  fill: #2a0491;
   stroke: #e3e3e3;
 }
 
