@@ -176,21 +176,19 @@ function updateToolTip(chosenXAxis, chosenYAxis, circlesGroup) {
 
   var toolTip = d3.tip()
   .attr("class", "tooltip")
-  .style("background", "black")
-  .style("color", "white")
-  .offset([80, -60])
+  .offset([100, -60])
   .html( function(d) {
-               return(`${d.state}<hr>${xlabel} ${d[chosenXAxis]}%<br>${ylabel}${d[chosenYAxis]}%`)
+               return(`${d.abbr}<br>${xlabel} ${d[chosenXAxis]}%<br>${ylabel}${d[chosenYAxis]}%`)
       }
   );
   circlesGroup.call(toolTip)
 
-  // chartGroup.call(toolTip);
+  chartGroup.call(toolTip);
 
 
   // Event Listeners
-  circlesGroup.on("click", function(d) {
-      toolTip.show(d, this);})
+  circlesGroup.on("click", function(data) {
+      toolTip.show(data, this);})
       .on("mouseout", function(data, index){
           toolTip.hide(data)
       });
