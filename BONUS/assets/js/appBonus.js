@@ -339,13 +339,13 @@ d3.csv("assets/data/data.csv").then(function(healthData, err){
            // updates circles with new x values
            circlesGroup = renderXCircles(circlesGroup, xLinearScale, chosenXAxis);
  
-         //   updating text within circles
+         //  updating text in circles
            circlesText = renderXText(circlesText, xLinearScale, chosenXAxis)  
    
-           // updates tooltips with new info
+           // updates tooltips w/new info
            circlesGroup = updateToolTip(chosenXAxis, chosenYAxis, circlesGroup);
    
-           // changes classes to change bold text
+           // changes classes to change text from labelGroup
            if (chosenXAxis === "age") {
              ageLabel
                .classed("active", true)
@@ -404,13 +404,13 @@ d3.csv("assets/data/data.csv").then(function(healthData, err){
          // updates circles with new y values
          circlesGroup = renderYCircles(circlesGroup, yLinearScale, chosenYAxis);
  
-         // update text within circles
+         // update text in circles
          circlesText = renderYText(circlesText, yLinearScale, chosenYAxis) 
  
-         // updates tooltips with new info
+         // updates tooltips w/new info
          circlesGroup = updateToolTip(chosenXAxis, chosenYAxis, circlesGroup);
  
-         // changes classes to change bold text
+         // changes classes to change text from labelGroup
          if (chosenYAxis === "obesity") {
            obesityLabel
              .classed("active", true)
